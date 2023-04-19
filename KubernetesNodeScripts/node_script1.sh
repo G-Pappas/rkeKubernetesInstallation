@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Enable ssh password authentication
+# Enable ssh password authentication test
 echo "Enable SSH password authentication:"
 sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
 echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
