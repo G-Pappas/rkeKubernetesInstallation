@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Enable ssh password authentication from terminal
 echo "Enable SSH password authentication:"
 sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
