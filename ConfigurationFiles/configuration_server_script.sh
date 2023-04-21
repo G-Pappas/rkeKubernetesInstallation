@@ -67,14 +67,16 @@ while read -r LINE; do
     sshpass -p $PASSWORD ssh-copy-id  -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub root@$IP_ADDRESS
   fi
 
-done < ~/kubernetes_test/IP_ADDRESS
+done < ./ConfigurationFiles/IP_ADDRESS
 
 #############################INSTALL THE RKE ON THE SERVER############################################
 # Check if rke executable file exists, if not download it
-if [ ! -f ./rke ]; then
+if [ ! -f ./ConfigurationFiles/rke ]; then
   echo "rke executable file not found, downloading..."
+  cd ConfigurationFiles
   wget https://github.com/rancher/rke/releases/download/v1.4.4/rke_linux-amd64 -O rke
   chmod +x rke
+  cd ..
 else
   echo "rke executable file already exists"
 fi
@@ -116,12 +118,12 @@ while IFS= read -r line; do
   new_node_entry="  - address: $ip_address\n    user: root\n    hostname_override: $hostname\n    role:\n      $role\n    docker_socket: /var/run/docker.sock"
 
   # Check if the node already exists in the cluster.yml file
-  if grep -q "address: $ip_address" cluster.yml; then
+  if grep -q "address: $ip_address" ./ConfigurationFiles/cluster.yml; then
     # Remove the old node entry
-    sed -i "/address: $ip_address/,/docker_socket: \/var\/run\/docker.sock/d" cluster.yml
+    sed -i "/address: $ip_address/,/docker_socket: \/var\/run\/docker.sock/d" ./ConfigurationFiles/cluster.yml
   fi
 
   # Add the new node entry to the nodes section of the cluster.yml file
-  sed -i '/^nodes:/a \'"$new_node_entry"'' cluster.yml
+  sed -i '/^nodes:/a \'"$new_node_entry"'' ./ConfigurationFiles/cluster.yml
 
-done < IP_ADDRESS
+done < ./ConfigurationFiles/IP_ADDRESS
