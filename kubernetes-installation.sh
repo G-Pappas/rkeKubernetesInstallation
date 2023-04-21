@@ -14,8 +14,10 @@ ip_addresses="$(grep -vE '^#|^\s*$' "$(pwd)/ConfigurationFiles/IP_ADDRESS")"
 # Extract the IP address of the master node from the IP_ADDRESS file
 master_ip=$(grep -E '^[^#]*\smaster\s*#' "$(pwd)/ConfigurationFiles/IP_ADDRESS" | awk '{print $1}')
 
+sudo apt install sshpass
+
 # Prompt the user for a hostname that will be used for all IPs
-read -p "Enter a hostname to use for all IPs: " hostname
+read -p "Enter a username to use for all IPs: " hostname
 read -s -p "Enter a password to use for all IPs: " password
 echo ""
 
