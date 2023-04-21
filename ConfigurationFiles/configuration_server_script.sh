@@ -69,7 +69,7 @@ while read -r LINE; do
 
 done < ~/kubernetes_test/IP_ADDRESS
 
-#######################INSTALL THE RKE ON THE SERVER####################################
+#############################INSTALL THE RKE ON THE SERVER############################################
 # Check if rke executable file exists, if not download it
 if [ ! -f ./rke ]; then
   echo "rke executable file not found, downloading..."
