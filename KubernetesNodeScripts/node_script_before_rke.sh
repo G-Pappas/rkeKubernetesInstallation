@@ -1,24 +1,33 @@
 #!/bin/bash
 
-# Enable ssh password authentication test
+# Fix time on the host
+sudo date --set="2023-04-19 16:13:00"
+
+# Enable ssh password authentication
 echo "Enable SSH password authentication:"
-sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
-echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-systemctl reload sshd
+sudo sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sudo echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+sudo systemctl reload sshd
 
 # Set Root password
 echo "Set root password:"
 echo -e "iamadmin\niamadmin" | passwd root >/dev/null 2>&1
+sudo passwd root
 
 # Commands for all K8s nodes
 # Add Docker GPG key, Docker Repo, install Docker and enable services
 # Add repo and Install packages
-sudo apt update
+
+sudo apt update -y
 sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt update
-sudo apt install -y containerd.io docker-ce=5:19.03.12~3-0~ubuntu-bionic docker-ce-cli=5:19.03.12~3-0~ubuntu-bionic
+curl https://releases.rancher.com/install-docker/20.10.sh | sh
+sudo apt update -y
+sudo usermod -aG docker cosmote
+sudo usermod -aG docker root
+
+#Download the Google Cloud public signing key for kubectl
+sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
 
 # Create required directories
 sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -51,7 +60,7 @@ sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 sudo swapoff -a
 
 # Turn off firewall
-ufw disable
+sudo ufw disable
 
 # Modify bridge adapter setting
 # Configure sysctl.
