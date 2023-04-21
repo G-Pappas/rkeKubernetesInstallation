@@ -1,18 +1,6 @@
 # Cluster Nodes:
 nodes:
-  - address: 172.16.0.250
-    user: root
-    hostname_override: master-node
-    role: 
-      - controlplane
-      - etcd
-    docker_socket: /var/run/docker.sock
-  - address: 172.16.0.249
-    user: root
-    hostname_override: node01
-    role:
-      - worker
-    docker_socket: /var/run/docker.sock
+
 
 # Name of the K8s Cluster
 cluster_name: cosmote-cluster
