@@ -1,6 +1,6 @@
 # Automated Kubernetes Installation with RKE
 
-This project provides an automated way to install Kubernetes using Rancher Kubernetes Engine (RKE) and bash scripting. The installation is done on a cluster of nodes running Ubuntu Server 22.0.4.
+This project provides an automated way to install Kubernetes using Rancher Kubernetes Engine (RKE) and bash scripting. The installation is done on a cluster of nodes running Ubuntu Server 22.04.
 
 ## Description
 
