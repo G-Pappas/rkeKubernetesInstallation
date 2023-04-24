@@ -3,7 +3,7 @@ nodes:
 
 
 # Name of the K8s Cluster
-cluster_name: cosmote-cluster
+cluster_name: cluster
 
 services:
   kube-api:
