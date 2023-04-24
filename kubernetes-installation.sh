@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ##############################INSTALL KUBERNETES##############################
-
 ##############################Instal node script before rke on each node##############################
 # Step 1: Make the configuration_server_script.sh file executable
 echo "Install first node script to all the nodes"
