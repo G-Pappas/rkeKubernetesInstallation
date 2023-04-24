@@ -71,9 +71,7 @@ echo ""
 ."$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 
 echo "Running RKE installation..."
-cd ConfigurationFiles
-./rke up
-cd ..
+."$(pwd)/ConfigurationFiles/rke up"
 
 # Copy kubeconfig file to master node
 echo "Copying kubeconfig file to master node..."
