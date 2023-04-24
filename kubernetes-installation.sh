@@ -10,7 +10,7 @@ chmod +x "$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 
 # Step 2: Extract the list of IP addresses from the IP_ADDRESS file, ignoring any comments
 ip_addresses="$(grep -vE '^#|^\s*$' "$(pwd)/ConfigurationFiles/IP_ADDRESS")"
-
+echo "$ip_addresses"
 # Extract the IP address of the master node from the IP_ADDRESS file
 master_ip=$(grep -E '^[^#]*\smaster\s*#' "$(pwd)/ConfigurationFiles/IP_ADDRESS" | awk '{print $1}')
 
@@ -68,7 +68,6 @@ done
 ##############################Instal node script before rke on each node##############################
 echo "Install separate machine script to add IP's to cluster.yml and .ssh"
 echo ""
-echo $ip
 ."$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 
 echo "Running RKE installation..."
