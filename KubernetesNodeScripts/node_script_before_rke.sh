@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Fix time on the host
-sudo date --set="2023-04-19 16:13:00"
+sudo apt-get install htpdate
+sudo timedatectl set-timezone Europe/Athens
+sudo htpdate -a google.com
 
 # Enable ssh password authentication
 echo "Enable SSH password authentication:"
