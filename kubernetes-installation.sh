@@ -53,7 +53,7 @@ do
                 if [ $? -eq 0 ]; then
                     echo "File deleted on @$ip"
                 else
-                    echo "Error deleting file on $hostname@$ip"
+                    echo "Error deleting file on @$ip"
                 fi
             else
                 echo "Error executing script on @$ip"
@@ -69,10 +69,10 @@ done
 echo "Install separate machine script to add IP's to cluster.yml and .ssh"
 echo ""
 
-./"$(pwd)/ConfigurationFiles/configuration_server_script.sh"
+."$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 
 echo "Running RKE installation..."
-./"$(pwd)/ConfigurationFiles/rke up"
+."$(pwd)/ConfigurationFiles/rke up"
 
 # Copy kubeconfig file to master node
 echo "Copying kubeconfig file to master node..."
