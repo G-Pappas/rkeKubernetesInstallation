@@ -51,15 +51,15 @@ do
                 
                 # Confirm that the file was deleted successfully
                 if [ $? -eq 0 ]; then
-                    echo "File deleted on @$ip"
+                    echo "File deleted on $ip"
                 else
-                    echo "Error deleting file on @$ip"
+                    echo "Error deleting file on $ip"
                 fi
             else
-                echo "Error executing script on @$ip"
+                echo "Error executing script on $ip"
             fi
         else
-            echo "Error copying file to @$ip"
+            echo "Error copying file to $ip"
         fi
     fi
 done
@@ -68,7 +68,7 @@ done
 ##############################Instal node script before rke on each node##############################
 echo "Install separate machine script to add IP's to cluster.yml and .ssh"
 echo ""
-
+echo $ip
 ."$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 
 echo "Running RKE installation..."
