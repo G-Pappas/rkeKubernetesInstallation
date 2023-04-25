@@ -67,7 +67,7 @@ done
 ##############################Instal node script before rke on each node##############################
 echo "Install separate machine script to add IP's to cluster.yml and .ssh"
 echo ""
-."$(pwd)/ConfigurationFiles/configuration_server_script.sh"
+"$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 
 echo "Running RKE installation..."
 cd ConfigurationFiles
