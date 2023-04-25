@@ -8,7 +8,8 @@ echo ""
 chmod +x "$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 
 # Step 2: Extract the list of IP addresses from the IP_ADDRESS file, ignoring any comments
-ip_addresses="$(grep -vE '^#|^\s*$' "$(pwd)/ConfigurationFiles/IP_ADDRESS")"
+# ip_addresses="$(grep -vE '^#|^\s*$' "$(pwd)/ConfigurationFiles/IP_ADDRESS")"
+ip_addresses="$(grep -vE '^#|^\s*$' "$(pwd)/ConfigurationFiles/IP_ADDRESS" | sed 's/#.*//')"
 echo "$ip_addresses"
 # Extract the IP address of the master node from the IP_ADDRESS file
 master_ip=$(grep -E '^[^#]*\smaster\s*#' "$(pwd)/ConfigurationFiles/IP_ADDRESS" | awk '{print $1}')
@@ -38,7 +39,7 @@ do
             # Make the copied file executable
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "chmod +x ~/node_script_before_rke.sh"
             # Run the copied file with sudo
-            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "echo $password | sudo -S ~/node_script_before_rke.sh"
+            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "sudo -S ~/node_script_before_rke.sh"
             # Check if the file was executed successfully
             if [ $? -eq 0 ]; then
                 echo "Script executed successfully on $ip"
