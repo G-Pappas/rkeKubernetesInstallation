@@ -95,6 +95,8 @@ while IFS= read -r line; do
   ip_address=$(echo "$line" | cut -d ' ' -f 1)
   hostname=$(echo "$line" | cut -d ' ' -f 2 | tr -d '#')
 
+  echo "#############################################WARNING!!!! Adding $ip_address to cluster.yml with hostname: $hostname"
+
   # Check if the hostname is empty
   if [[ -z "$hostname" ]]; then
     echo "Warning: No hostname found for IP address $ip_address. Skipping..."
