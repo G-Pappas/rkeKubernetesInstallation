@@ -23,6 +23,7 @@ echo ""
 # Loop through the IP addresses and copy the node_script_before_rke.sh script to each IP's home directory
 for ip in $ip_addresses
 do
+    echo "DIS IS DA IP ADDRE: $ip AND DA HOSTNAME: $hostname" 
     sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "mkdir .rkeBackUp"
     sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "touch .rkeBackUp/install_log.txt"
     # Check if the file was executed successfully before
