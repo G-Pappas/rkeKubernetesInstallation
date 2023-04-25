@@ -88,9 +88,10 @@ fi
 while IFS= read -r line; do
   # Check if the line is empty or starts with a comment character #
   if [[ -z "$line" || "$line" == \#* ]]; then
+    echo "#################################STOPPED $line"
     continue
   fi
-
+  echo "#################################PASSED $line"
   # Extract the IP address and hostname from the line
   ip_address=$(echo "$line" | cut -d ' ' -f 1)
   hostname=$(echo "$line" | cut -d ' ' -f 2 | tr -d '#')
