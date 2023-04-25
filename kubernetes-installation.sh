@@ -117,7 +117,7 @@ else
 
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'config after rke OK' >> ~/.rkeBackUp/install_log.txt"
 
-            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "exec bash"
+            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "source ~/.bashrc"
             
             # Delete the copied file if it was executed successfully
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "rm -f ~/node_script_after_rke.sh"
