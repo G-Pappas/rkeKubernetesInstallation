@@ -85,7 +85,7 @@ if sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "
     echo "kubeconfig file already copied to $master_ip"
 else
     sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "mkdir ~/.kube"
-    sshpass -p $password scp -o StrictHostKeyChecking=no ./ConfigurationFiles/kube_config_cluster.yml "root@$master_ip:~/.kube/config"
+    sshpass -p $password scp -o StrictHostKeyChecking=no ./ConfigurationFiles/kube_config_cluster.yml "$hostname@$master_ip:~/.kube/config"
     if [ $? -eq 0 ]; then
         sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'kubeconfig file copied OK' >> ~/.rkeBackUp/install_log.txt"
         echo "kubeconfig file copied successfully to $master_ip"
@@ -96,7 +96,7 @@ fi
 
 
 # Copy the node_script_after_rke.sh script to the IP's home directory
-if sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "grep 'config before rke OK' ~/.rkeBackUp/install_log.txt"; then
+if sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "grep 'config after rke OK' ~/.rkeBackUp/install_log.txt"; then
     echo "Script already executed successfully on $master_ip, skipping"
 else
     sshpass -p $password scp -o StrictHostKeyChecking=no "$(pwd)/KubernetesNodeScripts/node_script_after_rke.sh" "$hostname@$master_ip:~/node_script_after_rke.sh"
