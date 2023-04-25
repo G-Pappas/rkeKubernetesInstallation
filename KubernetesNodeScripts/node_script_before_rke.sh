@@ -12,8 +12,8 @@ sudo echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 sudo systemctl reload sshd
 
 # Set Root password
-echo "Set root password:"
-echo -e "iamadmin\niamadmin" | passwd root >/dev/null 2>&1
+#echo "Set root password:"
+#echo -e "iamadmin\niamadmin" | passwd root >/dev/null 2>&1
 sudo passwd root
 
 # Commands for all K8s nodes
