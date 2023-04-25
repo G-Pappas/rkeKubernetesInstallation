@@ -15,7 +15,7 @@ sudo apt-get install -y kubectl
 ##############################Configure kubectl on the master node with all its functions##############################
 
 # Point the kubectl config to the previously created directory
-export KUBECONFIG=/home/user/.kube/config
+export KUBECONFIG=$HOME/.kube/config
 # In order to run without sudo:
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
