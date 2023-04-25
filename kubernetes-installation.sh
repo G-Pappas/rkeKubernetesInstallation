@@ -78,9 +78,9 @@ cd ..
 
 # Copy kubeconfig file to master node
 echo "Copying kubeconfig file to master node..."
-
+echo "DIS IS DA IP ADDRE OF DA MASTER: $master_ip AND DA HOSTNAME: $hostname" 
 # Check if log file exists and contains "kubeconfig file copied OK"
-if sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "grep 'kubeconfig file copied OK' ~/.rkeBackUp/install_log.txt"; then
+if sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "grep 'kubeconfig file copied OK' ~/.rkeBackUp/install_log.txt"; then
     echo "kubeconfig file already copied to $master_ip"
 else
     sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "mkdir ~/.kube"
@@ -108,7 +108,7 @@ else
         sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "chmod +x ~/node_script_after_rke.sh"
         
         # Run the copied file with sudo
-        sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo $password | sudo -S ~/node_script_after_rke.sh"
+        sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S ~/node_script_after_rke.sh"
         
         # Check if the file was executed successfully
         if [ $? -eq 0 ]; then
