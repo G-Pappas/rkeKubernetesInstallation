@@ -10,10 +10,11 @@ chmod +x "$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 # Step 2: Extract the list of IP addresses from the IP_ADDRESS file, ignoring any comments
 # ip_addresses="$(grep -vE '^#|^\s*$' "$(pwd)/ConfigurationFiles/IP_ADDRESS")"
 ip_addresses="$(grep -vE '^#|^\s*$' "$(pwd)/ConfigurationFiles/IP_ADDRESS" | sed 's/#.*//')"
+echo "IP's of the cluster: "
 echo "$ip_addresses"
+
 # Extract the IP address of the master node from the IP_ADDRESS file
 master_ip="$(awk '/master/{gsub(/#.*/, ""); print $1}' "$(pwd)/ConfigurationFiles/IP_ADDRESS")"
-echo "DIS IS THE MASTER IP $master_ip"
 
 sudo apt install sshpass
 
@@ -25,7 +26,6 @@ echo ""
 # Loop through the IP addresses and copy the node_script_before_rke.sh script to each IP's home directory
 for ip in $ip_addresses
 do
-    echo "DIS IS DA IP ADDRE: $ip AND DA HOSTNAME: $hostname" 
     sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "mkdir .rkeBackUp"
     sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "touch .rkeBackUp/install_log.txt"
     # Check if the file was executed successfully before
@@ -79,7 +79,6 @@ cd ..
 
 # Copy kubeconfig file to master node
 echo "Copying kubeconfig file to master node..."
-echo "DIS IS DA IP ADDRE OF DA MASTER: $master_ip AND DA HOSTNAME: $hostname" 
 # Check if log file exists and contains "kubeconfig file copied OK"
 if sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "grep 'kubeconfig file copied OK' ~/.rkeBackUp/install_log.txt"; then
     echo "kubeconfig file already copied to $master_ip"
