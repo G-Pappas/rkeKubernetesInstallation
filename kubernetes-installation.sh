@@ -12,7 +12,7 @@ chmod +x "$(pwd)/ConfigurationFiles/configuration_server_script.sh"
 ip_addresses="$(grep -vE '^#|^\s*$' "$(pwd)/ConfigurationFiles/IP_ADDRESS" | sed 's/#.*//')"
 echo "$ip_addresses"
 # Extract the IP address of the master node from the IP_ADDRESS file
-master_ip=$(grep -E '^[^#]*\smaster\s*#' "$(pwd)/ConfigurationFiles/IP_ADDRESS" | awk '{print $1}')
+master_ip="$(awk '/master/{gsub(/#.*/, ""); print $1}' "$(pwd)/ConfigurationFiles/IP_ADDRESS")"
 echo "DIS IS THE MASTER IP $master_ip"
 
 sudo apt install sshpass
