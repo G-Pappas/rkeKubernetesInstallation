@@ -35,7 +35,7 @@ do
         sshpass -p $password scp -o StrictHostKeyChecking=no "$(pwd)/KubernetesNodeScripts/node_script_before_rke.sh" "$hostname@$ip:~/node_script_before_rke.sh"
         # Confirm that the file was copied successfully
         if [ $? -eq 0 ]; then
-            echo "File copied to @$ip"
+            echo "File copied to $ip"
             # Make the copied file executable
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "chmod +x ~/node_script_before_rke.sh"
             # Run the copied file with sudo
