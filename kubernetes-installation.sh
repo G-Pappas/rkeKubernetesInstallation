@@ -117,6 +117,16 @@ else
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'config after rke OK' >> ~/.rkeBackUp/install_log.txt"
 
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "source ~/.bashrc"
+
+            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher"
+
+            # Confirm that the Rancher was successfully installed
+            if [ $? -eq 0 ]; then
+                echo "Rancher installer on $master_ip"
+                echo "Go to http://$master_ip and follow instructions to set it up"
+            else
+                echo "Rancher not installed on $master_ip"
+            fi
             
             # Delete the copied file if it was executed successfully
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "rm -f ~/node_script_after_rke.sh"
