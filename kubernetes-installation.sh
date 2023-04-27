@@ -83,13 +83,21 @@ echo "Copying kubeconfig file to master node..."
 if sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "grep 'kubeconfig file copied OK' ~/.rkeBackUp/install_log.txt"; then
     echo "kubeconfig file already copied to $master_ip"
 else
+    ssh "root@$master_ip" "mkdir /root/.kube"
+    scp ./ConfigurationFiles/kube_config_cluster.yml "root@$master_ip:/root/.kube/config"
+    if [ $? -eq 0 ]; then
+        echo "kubeconfig file copied successfully to $master_ip for root user"
+    else
+        echo "Error copying kubeconfig file to $master_ip for root user"
+    fi
+
     sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "mkdir ~/.kube"
     sshpass -p $password scp -o StrictHostKeyChecking=no ./ConfigurationFiles/kube_config_cluster.yml "$hostname@$master_ip:~/.kube/config"
     if [ $? -eq 0 ]; then
         sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'kubeconfig file copied OK' >> ~/.rkeBackUp/install_log.txt"
-        echo "kubeconfig file copied successfully to $master_ip"
+        echo "kubeconfig file copied successfully to $master_ip for user"
     else
-        echo "Error copying kubeconfig file to $master_ip"
+        echo "Error copying kubeconfig file to $master_ip for user"
     fi
 fi
 
