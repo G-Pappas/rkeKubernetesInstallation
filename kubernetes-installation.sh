@@ -124,6 +124,10 @@ else
 
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'config after rke OK' >> ~/.rkeBackUp/install_log.txt"
 
+            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'alias k=kubectl' >>~/.bashrc"
+
+            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'complete -o default -F __start_kubectl k' >>~/.bashrc"
+
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "source ~/.bashrc"
 
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher"
@@ -131,7 +135,10 @@ else
             # Confirm that the Rancher was successfully installed
             if [ $? -eq 0 ]; then
                 echo "Rancher installer on $master_ip"
+                
                 echo "Go to http://$master_ip and follow instructions to set it up"
+
+                sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'rancher installation OK' >> ~/.rkeBackUp/install_log.txt"
             else
                 echo "Rancher not installed on $master_ip"
             fi

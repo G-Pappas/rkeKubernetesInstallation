@@ -21,10 +21,10 @@ sudo chown $(id -u):$(id -g) ~/.kube/config
 kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
 
 # Set alias for k
-echo 'alias k=kubectl' >>~/.bashrc
+# echo 'alias k=kubectl' >>~/.bashrc
 
 # Enable the alias for auto-completion
-echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
+# echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
 
 # Reload shell
 #exec bash
