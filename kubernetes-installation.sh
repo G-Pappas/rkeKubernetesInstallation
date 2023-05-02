@@ -128,7 +128,7 @@ else
 
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "echo 'complete -o default -F __start_kubectl k' >>~/.bashrc"
 
-            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "source ~/.bashrc"
+            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" ". ~/.bashrc"
 
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher"
 
