@@ -1,13 +1,14 @@
 #!/bin/bash
 #This must run on master node
 
+password=$1
 ##############################INSTALL kubectl##############################
 #Add the Kubernetes apt repository
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 # Update apt package index with the new repository and install kubectl
-sudo apt-get update
-sudo apt-get install -y kubectl #kubeadm
+echo "$password" | sudo apt-get update
+echo "$password" | sudo apt-get install -y kubectl #kubeadm
 #sudo apt-mark hold kubectl kubeadm kubelet docker docker-ce
 
 ##############################Configure kubectl on the master node with all its functions##############################
@@ -15,10 +16,10 @@ sudo apt-get install -y kubectl #kubeadm
 # Point the kubectl config to the previously created directory
 export KUBECONFIG=~/.kube/config
 # In order to run without sudo:
-sudo chown $(id -u):$(id -g) ~/.kube/config
+echo "$password" | sudo chown $(id -u):$(id -g) ~/.kube/config
 
 # kubectl competition
-kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+kubectl completion bash | echo "$password" | sudo tee /etc/bash_completion.d/kubectl > /dev/null
 
 # Set alias for k
 # echo 'alias k=kubectl' >>~/.bashrc
