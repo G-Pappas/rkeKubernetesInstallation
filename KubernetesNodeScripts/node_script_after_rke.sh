@@ -8,7 +8,7 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://a
 
 # Update apt package index with the new repository and install kubectl
 echo "$password" | sudo apt-get update
-echo "$password" | sudo apt-get install -y kubectl #kubeadm
+echo "$password" | sudo apt-get install -y kubectl kubeadm
 #sudo apt-mark hold kubectl kubeadm kubelet docker docker-ce
 
 ##############################Configure kubectl on the master node with all its functions##############################
