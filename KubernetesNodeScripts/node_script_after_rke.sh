@@ -19,6 +19,7 @@ export KUBECONFIG=~/.kube/config
 echo "$password" | sudo chown $(id -u):$(id -g) ~/.kube/config
 
 # kubectl competition
+echo "Adding kubernetes completion and shortcuts"
 kubectl completion bash | echo "$password" | sudo tee /etc/bash_completion.d/kubectl > /dev/null
 
 # Set alias for k

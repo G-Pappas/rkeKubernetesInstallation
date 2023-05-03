@@ -117,7 +117,7 @@ else
         sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "chmod +x ~/node_script_after_rke.sh"
         
         # Run the copied file with sudo
-        sshpass ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S ~/node_script_after_rke.sh $password"
+        echo "$password" | sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S ~/node_script_after_rke.sh $password"
         
         # Check if the file was executed successfully
         if [ $? -eq 0 ]; then
