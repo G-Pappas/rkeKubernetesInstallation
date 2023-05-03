@@ -40,7 +40,7 @@ do
             # Make the copied file executable
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "chmod +x ~/node_script_before_rke.sh"
             # Run the copied file with sudo
-            echo "$password" | sshpass -p "$password" ssh -o StrictHostKeyChecking=no "$hostname@$ip" "sudo -S ~/node_script_before_rke.sh"
+            sshpass -p "$password" ssh -o StrictHostKeyChecking=no "$hostname@$ip" "sudo -S ~/node_script_before_rke.sh"
 
             # Check if the file was executed successfully
             if [ $? -eq 0 ]; then
