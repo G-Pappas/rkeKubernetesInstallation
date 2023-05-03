@@ -131,7 +131,7 @@ else
 
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" ". ~/.bashrc"
 
-            sshpass ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher"
+            echo "$password" | sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher"
 
             # Confirm that the Rancher was successfully installed
             if [ $? -eq 0 ]; then
