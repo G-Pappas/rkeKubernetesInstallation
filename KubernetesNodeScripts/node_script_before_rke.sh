@@ -1,41 +1,42 @@
 #!/bin/bash
 
+password = $1
 # Fix time on the host
-sudo apt-get install htpdate
-sudo timedatectl set-timezone Europe/Athens
-sudo htpdate -a google.com
+echo "$password" | sudo apt-get install htpdate
+echo "$password" | sudo timedatectl set-timezone Europe/Athens
+echo "$password" | sudo htpdate -a google.com
 
 # Enable ssh password authentication
 echo "Enable SSH password authentication:"
-sudo sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
-sudo echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-sudo systemctl reload sshd
+echo "$password" | sudo sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+echo "$password" | sudo echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+echo "$password" | sudo systemctl reload sshd
 
 # Set Root password
 #echo "Set root password:"
 #echo -e "iamadmin\niamadmin" | passwd root >/dev/null 2>&1
-sudo passwd root
+echo -e "$password\n$password\n$password" | sudo passwd root
 
 # Commands for all K8s nodes
 # Add Docker GPG key, Docker Repo, install Docker and enable services
 # Add repo and Install packages
 
-sudo apt update -y
-sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
+echo "$password" | sudo apt update -y
+echo "$password" | sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
 curl https://releases.rancher.com/install-docker/20.10.sh | sh
-sudo apt update -y
-sudo usermod -aG docker cosmote
-sudo usermod -aG docker root
+echo "$password" | sudo apt update -y
+echo "$password" | sudo usermod -aG docker cosmote
+echo "$password" | sudo usermod -aG docker root
 
 #Download the Google Cloud public signing key for kubectl
-sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "$password" | sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
 
 # Create required directories
-sudo mkdir -p /etc/systemd/system/docker.service.d
+echo "$password" | sudo mkdir -p /etc/systemd/system/docker.service.d
 
 # Create daemon json config file
-sudo tee /etc/docker/daemon.json <<EOF
+echo "$password" | sudo tee /etc/docker/daemon.json <<EOF
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
@@ -47,9 +48,9 @@ sudo tee /etc/docker/daemon.json <<EOF
 EOF
 
 # Start and enable Services
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-sudo systemctl enable docker
+echo "$password" | sudo systemctl daemon-reload
+echo "$password" | sudo systemctl restart docker
+echo "$password" | sudo systemctl enable docker
 
 # Turn off swap
 # The Kubernetes scheduler determines the best available node on
@@ -58,24 +59,24 @@ sudo systemctl enable docker
 # issues within Kubernetes.
 # For this reason, Kubernetes requires that you disable swap in the host system.
 # If swap is not disabled, kubelet service will not start on the masters and nodes
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-sudo swapoff -a
+echo "$password" | sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+echo "$password" | sudo swapoff -a
 
 # Turn off firewall
-sudo ufw disable
+echo "$password" | sudo ufw disable
 
 # Modify bridge adapter setting
 # Configure sysctl.
-sudo modprobe overlay
-sudo modprobe br_netfilter
+echo "$password" | sudo modprobe overlay
+echo "$password" | sudo modprobe br_netfilter
 
-sudo tee /etc/sysctl.d/kubernetes.conf<<EOF
+echo "$password" | sudo tee /etc/sysctl.d/kubernetes.conf<<EOF
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
 EOF
 
-sudo sysctl --system
+echo "$password" | sudo sysctl --system
 
 # Ensure that the br_netfilter module is loaded
 lsmod | grep br_netfilter
