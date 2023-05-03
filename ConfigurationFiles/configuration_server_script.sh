@@ -2,7 +2,8 @@
 
 #######################COPY THE SSH KEYS OF ALL THE WORKERS AND THE MASTER NODES####################################
 #Prompt for entering the password of the nodes
-read -s -p "Enter the password of the nodes: " PASSWORD
+hostname = $1
+PASSWORD = $2
 
 # Check if the input file exists
 # if [ -f "$input_file" ]; then
@@ -59,12 +60,14 @@ while read -r LINE; do
   if [ -n "$PUB_FILE" ]; then
     # If a .pub file exists in the ~/.ssh/ directory, use ssh-copy-id to copy the public key to the remote server with the found name
     sshpass -p $PASSWORD ssh-copy-id  -o StrictHostKeyChecking=no -i "$PUB_FILE" root@$IP_ADDRESS
+    sshpass -p $PASSWORD ssh-copy-id  -o StrictHostKeyChecking=no -i "$PUB_FILE" $hostname@$IP_ADDRESS
   else
     # If a .pub file doesn't exist in the ~/.ssh/ directory, create a new key with the default name
     ssh-keygen -b 4096 -t rsa -f ~/.ssh/id_rsa -q -N ""
 
     # Use ssh-copy-id to copy the new public key to the remote server with the default name
     sshpass -p $PASSWORD ssh-copy-id  -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub root@$IP_ADDRESS
+    sshpass -p $PASSWORD ssh-copy-id  -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub $hostname@$IP_ADDRESS
   fi
 
 done < ./ConfigurationFiles/IP_ADDRESS

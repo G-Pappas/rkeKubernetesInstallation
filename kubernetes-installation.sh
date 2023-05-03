@@ -19,8 +19,8 @@ master_ip="$(awk '/master/{gsub(/#.*/, ""); print $1}' "$(pwd)/ConfigurationFile
 sudo apt install sshpass
 
 # Prompt the user for a hostname that will be used for all IPs
-read -p "Enter a username to use for all IPs: " hostname
-read -s -p "Enter a password to use for all IPs: " password
+read -p "Enter a username to use for all IPs of the nodes: " hostname
+read -s -p "Enter a password to use for all IPs of the nodes: " password
 echo ""
 
 # Loop through the IP addresses and copy the node_script_before_rke.sh script to each IP's home directory
@@ -40,7 +40,8 @@ do
             # Make the copied file executable
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "chmod +x ~/node_script_before_rke.sh"
             # Run the copied file with sudo
-            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$ip" "sudo -S ~/node_script_before_rke.sh"
+            echo "$password" | sshpass -p "$password" ssh -o StrictHostKeyChecking=no "$hostname@$ip" "sudo -S ~/node_script_before_rke.sh"
+
             # Check if the file was executed successfully
             if [ $? -eq 0 ]; then
                 echo "Script executed successfully on $ip"
@@ -70,7 +71,7 @@ done
 ##############################Instal node script before rke on each node##############################
 echo "Install separate machine script to add IP's to cluster.yml and .ssh"
 echo ""
-"$(pwd)/ConfigurationFiles/configuration_server_script.sh"
+"$(pwd)/ConfigurationFiles/configuration_server_script.sh" $hostname $password
 
 echo "Running RKE installation..."
 cd ConfigurationFiles
@@ -116,7 +117,7 @@ else
         sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "chmod +x ~/node_script_after_rke.sh"
         
         # Run the copied file with sudo
-        sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S ~/node_script_after_rke.sh"
+        sshpass ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S ~/node_script_after_rke.sh"
         
         # Check if the file was executed successfully
         if [ $? -eq 0 ]; then
@@ -130,7 +131,7 @@ else
 
             sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" ". ~/.bashrc"
 
-            sshpass -p $password ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher"
+            sshpass ssh -o StrictHostKeyChecking=no "$hostname@$master_ip" "sudo -S docker run --privileged -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher"
 
             # Confirm that the Rancher was successfully installed
             if [ $? -eq 0 ]; then
