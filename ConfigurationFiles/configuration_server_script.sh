@@ -2,8 +2,8 @@
 
 #######################COPY THE SSH KEYS OF ALL THE WORKERS AND THE MASTER NODES####################################
 #Prompt for entering the password of the nodes
-hostname = $1
-PASSWORD = $2
+hostname=$1
+PASSWORD=$2
 
 # Check if the input file exists
 # if [ -f "$input_file" ]; then
