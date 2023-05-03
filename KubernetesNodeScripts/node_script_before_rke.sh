@@ -1,6 +1,6 @@
 #!/bin/bash
 
-password = $1
+password=$1
 # Fix time on the host
 echo "$password" | sudo apt-get install htpdate
 echo "$password" | sudo timedatectl set-timezone Europe/Athens
